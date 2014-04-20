@@ -43,12 +43,12 @@ class Pyrate(object):
     def request(self, method, target, content=None, request_headers=None,
                 response_format=None, return_raw=False):
 
-        request_url = '%s%s' % (self.base_url, target)
+        request_url = '{0}{1}'.format(self.base_url, target)
 
         if response_format:
-            request_url += '.%s' % response_format
+            request_url += '.{0}'.format(response_format)
         elif self.default_response_format:
-            request_url += '.%s' % self.default_response_format
+            request_url += '.{0}'.format(self.default_response_format)
 
         request_body = dict(self.default_body_content or {}, **(content or {}))
         request_headers = dict(self.default_header_content or {},
@@ -112,10 +112,10 @@ class Pyrate(object):
     def check_response(self, response):
         if self.validate_response and not 200 <= response.status_code < 300:
             raise Exception(
-                "There is something wrong with the response (Code: %i)\n"
-                "Request was: %s %s\n"
-                "Request data was: %s \n"
-                "Response Content: %s" % (
+                'There is something wrong with the response (Code: {0})\n'
+                'Request was: {1} {2}\n'
+                'Request data was: {3} \n'
+                'Response Content: {4}'.format(
                     response.status_code, response.request.method,
                     response.request.url, response.request.body,
                     response.content))
@@ -156,5 +156,5 @@ class Pyrate(object):
 
     # Deprecated Methods
     def do(self, *args, **kwargs):
-        raise DeprecationWarning("This proxy method is deprecated. Please use "
-                                 "the appropriate method directly instead.")
+        raise DeprecationWarning('This proxy method is deprecated. Please use '
+                                 'the appropriate method directly instead.')

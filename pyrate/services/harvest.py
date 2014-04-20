@@ -17,15 +17,17 @@ class HarvestPyrate(Pyrate):
 
     connection_check = {'http_method': 'GET', 'target': 'account/who_am_i'}
 
-    def __init__(self, auth_user, auth_pass, organisation_name, default_response_format=None):
+    def __init__(self, auth_user, auth_pass, organisation_name,
+                 default_response_format=None):
+
         super(HarvestPyrate, self).__init__()
         self.auth_data['username'] = auth_user
         self.auth_data['password'] = auth_pass
         self.auth_data['organisation_name'] = organisation_name
-        self.base_url = 'https://' + organisation_name + '.harvestapp.com/'
+        self.base_url = 'https://{0}.harvestapp.com/'.format(organisation_name)
         self.default_header_content = {
             'Authorization': self.get_auth_data()
         }
 
-        if default_response_format or default_response_format == '':
+        if default_response_format:
             self.default_response_format = default_response_format

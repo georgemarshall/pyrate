@@ -24,15 +24,13 @@ class MailchimpPyrate(Pyrate):
 
     def __init__(self, apikey, default_response_format=None):
         super(MailchimpPyrate, self).__init__()
-        self.base_url = 'https://' + apikey[-3:] + '.api.mailchimp.com/2.0/'
+        self.base_url = 'https://{0}.api.mailchimp.com/2.0/'.format(apikey[-3:])
         self.default_body_content = {
             'apikey': apikey
         }
 
         if default_response_format:
             self.default_response_format = default_response_format
-        else:
-            self.default_response_format = self.response_formats[0]
 
     def get_auth_data(self):
         return None
@@ -51,13 +49,13 @@ class MailchimpPyrate(Pyrate):
 
     def parse_errors(self, response):
         if 'error' in response:
-            print("Error: %s (Code: %s)" % (response['error'], response['code']))
+            print('Error: {error} (Code: {code})'.format(response))
         elif 'errors' in response:
             for error in response['errors']:
-                print("Error: %s (Code: %s)" % (error['error'], error['code']))
+                print('Error: {error} (Code: {code})'.format(error))
                 print(error['param'])
         else:
-            print("Error: %s" % response)
+            print('Error: {0}'.format(response))
 
     # http://apidocs.mailchimp.com/api/2.0/lists/list.php
     def get_all_lists(self, filters=None, start=None, limit=None,
@@ -85,10 +83,14 @@ class MailchimpPyrate(Pyrate):
 
         list_id = self.get_list_by_name(list_name)['id']
         kwargs = clean_dict({
-            'id': list_id, 'email': {'email': user_email},
-            'merge_vars': merge_vars, 'email_type': email_type,
-            'double_optin': double_optin, 'update_existing': update_existing,
-            'replace_interests': replace_interests, 'send_welcome': send_welcome
+            'id': list_id,
+            'email': {'email': user_email},
+            'merge_vars': merge_vars,
+            'email_type': email_type,
+            'double_optin': double_optin,
+            'update_existing': update_existing,
+            'replace_interests': replace_interests,
+            'send_welcome': send_welcome,
         })
 
         return self.post('lists/subscribe', content=kwargs)

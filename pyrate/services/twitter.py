@@ -17,7 +17,7 @@ class TwitterPyrate(Pyrate):
 
     # response
     response_formats = ['json']
-    default_response_format = response_formats[0]
+    default_response_format = None
     validate_response = True
 
     connection_check = {

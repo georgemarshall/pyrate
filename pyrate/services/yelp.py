@@ -1,4 +1,5 @@
 from urllib import urlencode
+from urlparse import SplitResult
 
 from pyrate.main import Pyrate
 from pyrate.utils import clean_dict
@@ -19,7 +20,7 @@ class YelpPyrate(Pyrate):
 
     # response
     response_formats = ['json']
-    default_response_format = response_formats[0]
+    default_response_format = None
     validate_response = True
 
     connection_check = {'http_method': None, 'target': None}
@@ -45,9 +46,9 @@ class YelpPyrate(Pyrate):
             'lang_filter': language_filter
         }))
 
-        target = 'business/{0}{1}{2}'.format(name, '?' if qs else None, qs)
+        target = SplitResult('', '', 'business/{0}'.format(name), qs, '')
 
-        return self.get(target)
+        return self.get(target.geturl())
 
     def search(self, term=None, limit=None, offset=None, sort=None,
                category_filter=None, radius_filter=None, deals_filter=None,
@@ -65,6 +66,6 @@ class YelpPyrate(Pyrate):
             'lang': language
         }))
 
-        target = 'search{0}{1}'.format('?' if qs else None, qs)
+        target = SplitResult('', '', 'search', qs, '')
 
-        return self.get(target)
+        return self.get(target.geturl())

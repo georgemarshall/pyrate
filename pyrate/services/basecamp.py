@@ -7,7 +7,7 @@ class BasecampPyrate(Pyrate):
     base_url = None
     default_header_content = None
     default_body_content = None
-    auth_data = {'type': 'BASIC'}
+    auth_data = {'type': 'BASIC', 'username': None, 'password': None}
     send_json = True
 
     # response
@@ -22,7 +22,7 @@ class BasecampPyrate(Pyrate):
         self.auth_data['username'] = auth_user
         self.auth_data['password'] = auth_pass
         self.auth_data['org_id'] = org_id
-        self.base_url = 'https://basecamp.com/' + org_id + '/api/v1/'
+        self.base_url = 'https://basecamp.com/{0}/api/v1/'.format(org_id)
         self.default_header_content = {
             'Authorization': self.get_auth_data(),
             'User Agent': 'Pyrate'
@@ -30,5 +30,3 @@ class BasecampPyrate(Pyrate):
 
         if default_response_format:
             self.default_response_format = default_response_format
-        else:
-            self.default_response_format = self.response_formats[0]
