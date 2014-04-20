@@ -14,5 +14,6 @@ dist
 build
 
 # IDE
+.coverage
 .idea
 .DS_Store
