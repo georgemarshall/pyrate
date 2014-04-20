@@ -3,7 +3,7 @@ import sys
 from httmock import urlmatch, HTTMock, response
 
 sys.path.append('../pyrate')  # we want the local version and not the installed one
-from pyrate.services import basecamp, github, harvest, mailchimp, twitter
+from pyrate.services import basecamp, github, harvest, mailchimp, twitter, yelp
 
 
 # In order to use these tests you need to:
@@ -25,11 +25,36 @@ class TestSequenceFunctions(unittest.TestCase):
         elif service == 'twitter':
             return twitter.TwitterPyrate("000", "000", "000", "000")
 
+        elif service == 'yelp':
+            return yelp.YelpPyrate("000", "000", "000", "000")
+
         elif service == 'basecamp':
             return basecamp.BasecampPyrate("email@example.com", "mypass", "123456")
 
 
     # TODO: Improve urlmatch regex's
+
+    ##############################################
+    ## YELP
+    ##############################################
+
+    @urlmatch(netloc=r'api\.yelp\.com')
+    def mock_yelp(self, url, request):
+        headers = {
+            'status_code': 200,
+        }
+        content = {'id': 'yelp-san-francisco', 'total': 10651}
+        return response(200, content, headers)
+
+    def test_yelp_get_business(self):
+        h = self.getHandler('yelp')
+        with HTTMock(self.mock_yelp):
+            self.assertIn('id', h.get_business('yelp-san-francisco'))
+
+    def test_yelp_search(self):
+        h = self.getHandler('yelp')
+        with HTTMock(self.mock_yelp):
+            self.assertIn('total', h.search())
 
     ##############################################
     ## TWITTER
@@ -46,7 +71,7 @@ class TestSequenceFunctions(unittest.TestCase):
     def test_twitter_con_do_geo(self):
         h = self.getHandler('twitter')
         with HTTMock(self.mock_twitter):
-            self.assertTrue('geometry' in h.get('geo/id/df51dec6f4ee2b2c'))
+            self.assertTrue('id' in h.get('geo/id/df51dec6f4ee2b2c'))
 
     def test_twitter_tweet(self):
         h = self.getHandler('twitter')
