@@ -1,5 +1,5 @@
 from six import iteritems
-from six.moves import urllib
+from six.moves.urllib.parse import parse_qsl, urlencode, urlsplit
 
 from requests_oauthlib import OAuth1
 
@@ -22,8 +22,8 @@ def append_qs(url, items):
     if not items:
         return url
 
-    u = urllib.parse.urlsplit(url)
-    qsl = urllib.parse.parse_qsl(u.query)
+    u = urlsplit(url)
+    qsl = parse_qsl(u.query)
 
     if isinstance(items, dict):
         qsl = qsl + items.items()
@@ -32,7 +32,7 @@ def append_qs(url, items):
     elif isinstance(items, tuple):
         qsl.append(items)
 
-    return u._replace(query=urllib.urlencode(qsl)).geturl()
+    return u._replace(query=urlencode(qsl)).geturl()
 
 
 # Deprecated methods

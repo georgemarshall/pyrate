@@ -16,7 +16,7 @@ class YelpPyrate(Pyrate):
     send_json = False
 
     # response
-    response_formats = ['json']
+    response_formats = []
     default_response_format = None
     validate_response = True
 
