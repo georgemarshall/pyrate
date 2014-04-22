@@ -39,7 +39,7 @@ setup(
         open("requirements.txt").readlines(),
     ],
     tests_require=[
-        'httmock==1.0.7',
+        'httmock>=1.0.7,<1.1',
     ],
     entry_points={
         'console_scripts': [
