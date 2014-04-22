@@ -1,7 +1,5 @@
-from six.moves.urllib.parse import SplitResult, urlencode
-
 from pyrate.main import Pyrate
-from pyrate.utils import clean_dict
+from pyrate.utils import append_qs, clean_dict
 
 
 class YelpPyrate(Pyrate):
@@ -39,21 +37,21 @@ class YelpPyrate(Pyrate):
     def get_business(self, name, country_code=None, language=None,
                      language_filter=None):
 
-        qs = urlencode(clean_dict({
+        qs = clean_dict({
             'cc': country_code,
             'lang': language,
             'lang_filter': language_filter
-        }))
+        })
 
-        target = SplitResult('', '', 'business/{0}'.format(name), qs, '')
+        target = append_qs('business/{0}'.format(name), qs)
 
-        return self.get(target.geturl())
+        return self.get(target)
 
     def search(self, term=None, limit=None, offset=None, sort=None,
                category_filter=None, radius_filter=None, deals_filter=None,
                country_code=None, language=None, **kwargs):
 
-        qs = urlencode(clean_dict({
+        qs = clean_dict({
             'term': term,
             'limit': limit,
             'offset': offset,
@@ -63,8 +61,8 @@ class YelpPyrate(Pyrate):
             'deals_filter': deals_filter,
             'cc': country_code,
             'lang': language
-        }))
+        })
 
-        target = SplitResult('', '', 'search', qs, '')
+        target = append_qs('search', qs)
 
-        return self.get(target.geturl())
+        return self.get(target)

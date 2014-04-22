@@ -16,13 +16,23 @@ def clean_dict(dirty_dict):
     return dict((k, v) for k, v in iteritems(dirty_dict) if v)
 
 
-def append_qs(target, key, value=''):
+def append_qs(url, items):
     """Append a key/value to the query string of a url"""
-    url = urllib.parse.urlsplit(target)
-    qsl = urllib.parse.parse_qsl(url.query)
-    qsl.append((key, value))
 
-    return url._replace(query=urllib.urlencode(qsl)).geturl()
+    if not items:
+        return url
+
+    u = urllib.parse.urlsplit(url)
+    qsl = urllib.parse.parse_qsl(u.query)
+
+    if isinstance(items, dict):
+        qsl = qsl + items.items()
+    elif isinstance(items, list):
+        qsl = qsl + items
+    elif isinstance(items, tuple):
+        qsl.append(items)
+
+    return u._replace(query=urllib.urlencode(qsl)).geturl()
 
 
 # Deprecated methods

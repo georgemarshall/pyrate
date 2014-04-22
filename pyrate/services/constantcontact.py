@@ -34,7 +34,7 @@ class ConstantContactPyrate(Pyrate):
     def request(self, method, target, content=None, request_headers=None,
                 response_format=None, return_raw=False):
 
-        target = append_qs(target, 'api_key', self.auth_data['api_key'])
+        target = append_qs(target, ('api_key', self.auth_data['api_key']))
 
         return super(ConstantContactPyrate, self).request(
             method, target, content, request_headers, response_format, return_raw)
@@ -43,7 +43,7 @@ class ConstantContactPyrate(Pyrate):
         # modified_since in ISO-8601 eg: 2014-02-17T08:22:10+00:00
         target = 'lists'
         if modified_since:
-            target = append_qs(target, 'modified_since', modified_since)
+            target = append_qs(target, ('modified_since', modified_since))
 
         return self.get(target)
 
