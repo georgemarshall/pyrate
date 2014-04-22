@@ -1,6 +1,11 @@
 from httmock import HTTMock, response, urlmatch
 import sys
-import unittest
+
+if sys.version_info >= (2, 6):
+    import unittest2 as unittest
+else:
+    import unittest
+
 
 sys.path.append('pyrate')  # we want the local version and not the installed one
 from pyrate.services import basecamp, github, harvest, mailchimp, twitter, yelp
