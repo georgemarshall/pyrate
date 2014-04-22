@@ -11,7 +11,7 @@ class YelpPyrate(Pyrate):
     auth_data = {
         'type': 'OAUTH1',
         'client_key': None, 'client_secret': None,
-        'token_key': None, 'token_secret': None
+        'token_key': None, 'token_secret': None,
     }
     send_json = False
 
@@ -40,7 +40,7 @@ class YelpPyrate(Pyrate):
         qs = clean_dict({
             'cc': country_code,
             'lang': language,
-            'lang_filter': language_filter
+            'lang_filter': language_filter,
         })
 
         target = append_qs('business/{0}'.format(name), qs)
@@ -49,7 +49,9 @@ class YelpPyrate(Pyrate):
 
     def search(self, term=None, limit=None, offset=None, sort=None,
                category_filter=None, radius_filter=None, deals_filter=None,
-               country_code=None, language=None, **kwargs):
+               country_code=None, language=None,
+               bounds=(None, None, None, None), ll=(None, None),
+               location=None, cll=(None, None)):
 
         qs = clean_dict({
             'term': term,
@@ -60,7 +62,11 @@ class YelpPyrate(Pyrate):
             'radius_filter': radius_filter,
             'deals_filter': deals_filter,
             'cc': country_code,
-            'lang': language
+            'lang': language,
+            'bounds': '{},{}|{},{}'.format(bounds) if all(bounds) else None,
+            'll': ','.join(ll) if all(ll) else None,
+            'location': location,
+            'cll': ','.join(cll) if all(cll) else None,
         })
 
         target = append_qs('search', qs)
