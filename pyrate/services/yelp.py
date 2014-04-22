@@ -1,5 +1,4 @@
-from urllib import urlencode
-from urlparse import SplitResult
+from six.moves.urllib.parse import SplitResult, urlencode
 
 from pyrate.main import Pyrate
 from pyrate.utils import clean_dict
@@ -52,7 +51,7 @@ class YelpPyrate(Pyrate):
 
     def search(self, term=None, limit=None, offset=None, sort=None,
                category_filter=None, radius_filter=None, deals_filter=None,
-               country_code=None, language=None):
+               country_code=None, language=None, **kwargs):
 
         qs = urlencode(clean_dict({
             'term': term,

@@ -1,5 +1,5 @@
-from urllib import urlencode
-from urlparse import parse_qsl, urlsplit
+from six import iteritems
+from six.moves import urllib
 
 from requests_oauthlib import OAuth1
 
@@ -13,16 +13,16 @@ def build_oauth1(client_key, client_secret, resource_owner_key,
 
 def clean_dict(dirty_dict):
     """Cleans a dictionary from keys with empty string values"""
-    return dict((k, v) for k, v in dirty_dict.iteritems() if v)
+    return dict((k, v) for k, v in iteritems(dirty_dict) if v)
 
 
 def append_qs(target, key, value=''):
     """Append a key/value to the query string of a url"""
-    url = urlsplit(target)
-    qsl = parse_qsl(url.query)
+    url = urllib.parse.urlsplit(target)
+    qsl = urllib.parse.parse_qsl(url.query)
     qsl.append((key, value))
 
-    return url._replace(query=urlencode(qsl)).geturl()
+    return url._replace(query=urllib.urlencode(qsl)).geturl()
 
 
 # Deprecated methods

@@ -1,8 +1,8 @@
-import unittest
+from httmock import HTTMock, response, urlmatch
 import sys
-from httmock import urlmatch, HTTMock, response
+import unittest
 
-sys.path.append('../pyrate')  # we want the local version and not the installed one
+sys.path.append('pyrate')  # we want the local version and not the installed one
 from pyrate.services import basecamp, github, harvest, mailchimp, twitter, yelp
 
 

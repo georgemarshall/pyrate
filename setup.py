@@ -34,7 +34,7 @@ setup(
     classifiers=CLASSIFIERS,
     include_package_data=True,
     zip_safe=False,
-    test_suite='pyrate.tests',
+    test_suite='test_pyrate',
     install_requires=[
         open("requirements.txt").readlines(),
     ],
